@@ -1,0 +1,190 @@
+import 'package:black_sky/core/constants/game_constants.dart';
+import 'package:black_sky/domain/entities/unit_entity.dart';
+
+/// Vertical-slice USA roster. Balanced as a starting point for playtesting —
+/// tune deckCost/damage/armor once real matches produce data.
+/// Extend with more `UnitEntity` entries per category as content is added;
+/// full scope calls for 400+ units across 4 factions, this is faction #1.
+class UsaUnits {
+  UsaUnits._();
+
+  static const recon = UnitEntity(
+    id: 'usa_recon_humvee',
+    name: 'M1114 Scout',
+    faction: Faction.usa,
+    category: UnitCategory.recon,
+    deckCost: 4,
+    maxHp: 120,
+    armorFront: 8,
+    armorSide: 4,
+    armorRear: 2,
+    speed: 14.0,
+    sightRange: 42.0,
+    stealth: 0.15,
+    ammoCapacity: 200,
+    fuelCapacity: 100,
+    canRepairSelf: false,
+    attackDamage: 12,
+    attackRange: 18,
+    reloadSeconds: 0.8,
+  );
+
+  static const infantry = UnitEntity(
+    id: 'usa_inf_rifle_squad',
+    name: 'Rifle Squad',
+    faction: Faction.usa,
+    category: UnitCategory.infantry,
+    deckCost: 3,
+    maxHp: 100,
+    armorFront: 2,
+    armorSide: 2,
+    armorRear: 2,
+    speed: 5.0,
+    sightRange: 28.0,
+    stealth: 0.35,
+    ammoCapacity: 240,
+    fuelCapacity: 0,
+    canRepairSelf: false,
+    attackDamage: 18,
+    attackRange: 14,
+    reloadSeconds: 1.0,
+  );
+
+  static const apc = UnitEntity(
+    id: 'usa_apc_stryker',
+    name: 'Stryker APC',
+    faction: Faction.usa,
+    category: UnitCategory.apc,
+    deckCost: 6,
+    maxHp: 260,
+    armorFront: 20,
+    armorSide: 12,
+    armorRear: 8,
+    speed: 16.0,
+    sightRange: 32.0,
+    stealth: 0.05,
+    ammoCapacity: 300,
+    fuelCapacity: 140,
+    canRepairSelf: false,
+    attackDamage: 25,
+    attackRange: 22,
+    reloadSeconds: 1.2,
+  );
+
+  static const ifv = UnitEntity(
+    id: 'usa_ifv_bradley',
+    name: 'M2 Bradley',
+    faction: Faction.usa,
+    category: UnitCategory.ifv,
+    deckCost: 9,
+    maxHp: 340,
+    armorFront: 34,
+    armorSide: 18,
+    armorRear: 10,
+    speed: 13.0,
+    sightRange: 34.0,
+    stealth: 0.05,
+    ammoCapacity: 280,
+    fuelCapacity: 130,
+    canRepairSelf: false,
+    attackDamage: 45,
+    attackRange: 30,
+    reloadSeconds: 1.6,
+  );
+
+  static const mbt = UnitEntity(
+    id: 'usa_mbt_abrams',
+    name: 'M1A3 Abrams',
+    faction: Faction.usa,
+    category: UnitCategory.mbt,
+    deckCost: 16,
+    maxHp: 620,
+    armorFront: 90,
+    armorSide: 45,
+    armorRear: 20,
+    speed: 11.0,
+    sightRange: 36.0,
+    stealth: 0.0,
+    ammoCapacity: 42,
+    fuelCapacity: 200,
+    canRepairSelf: false,
+    attackDamage: 140,
+    attackRange: 48,
+    reloadSeconds: 3.2,
+  );
+
+  static const artillery = UnitEntity(
+    id: 'usa_arty_paladin',
+    name: 'M109 Paladin',
+    faction: Faction.usa,
+    category: UnitCategory.artillery,
+    deckCost: 12,
+    maxHp: 200,
+    armorFront: 12,
+    armorSide: 8,
+    armorRear: 4,
+    speed: 9.0,
+    sightRange: 26.0,
+    stealth: 0.1,
+    ammoCapacity: 30,
+    fuelCapacity: 160,
+    canRepairSelf: false,
+    attackDamage: 180,
+    attackRange: 140,
+    reloadSeconds: 6.0,
+  );
+
+  static const antiAir = UnitEntity(
+    id: 'usa_aa_avenger',
+    name: 'M6 Avenger',
+    faction: Faction.usa,
+    category: UnitCategory.antiAir,
+    deckCost: 8,
+    maxHp: 180,
+    armorFront: 14,
+    armorSide: 8,
+    armorRear: 4,
+    speed: 15.0,
+    sightRange: 40.0,
+    stealth: 0.05,
+    ammoCapacity: 16,
+    fuelCapacity: 120,
+    canRepairSelf: false,
+    attackDamage: 90,
+    attackRange: 60,
+    reloadSeconds: 2.5,
+  );
+
+  static const helicopter = UnitEntity(
+    id: 'usa_heli_apache',
+    name: 'AH-64 Apache',
+    faction: Faction.usa,
+    category: UnitCategory.helicopter,
+    deckCost: 18,
+    maxHp: 260,
+    armorFront: 20,
+    armorSide: 12,
+    armorRear: 8,
+    speed: 30.0,
+    sightRange: 50.0,
+    stealth: 0.0,
+    ammoCapacity: 20,
+    fuelCapacity: 100,
+    canRepairSelf: false,
+    attackDamage: 120,
+    attackRange: 55,
+    reloadSeconds: 2.8,
+    isAirUnit: true,
+  );
+
+  static const List<UnitEntity> roster = [
+    recon,
+    infantry,
+    apc,
+    ifv,
+    mbt,
+    artillery,
+    antiAir,
+    helicopter,
+  ];
+}

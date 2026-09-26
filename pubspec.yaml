@@ -1,0 +1,65 @@
+name: black_sky
+description: "PROJECT BLACK SKY — original AAA-style mobile RTS built with Flutter + Flame."
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: "3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # --- Rendering / game engine ---
+  flame: ^1.18.0
+  flame_audio: ^2.1.0
+
+  # --- Firebase ---
+  firebase_core: ^3.4.0
+  firebase_auth: ^5.2.0
+  cloud_firestore: ^5.4.0
+  firebase_storage: ^12.3.0
+
+  # --- Realtime multiplayer (Nakama dedicated server) ---
+  nakama: ^1.4.0
+
+  # --- State management ---
+  flutter_riverpod: ^2.5.1
+
+  # --- DI ---
+  get_it: ^7.7.0
+
+  # --- Local persistence (offline profile cache, settings) ---
+  shared_preferences: ^2.2.3
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # --- Networking / env ---
+  flutter_dotenv: ^5.1.0
+  connectivity_plus: ^6.0.5
+
+  # --- Utility ---
+  equatable: ^2.0.5
+  uuid: ^4.4.2
+  logger: ^2.4.0
+  vector_math: ^2.1.4
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.11
+  hive_generator: ^2.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
+    - assets/images/
+    - assets/images/units/
+    - assets/images/maps/
+    - assets/images/ui/
+    - assets/audio/

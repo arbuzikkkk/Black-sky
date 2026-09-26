@@ -1,0 +1,70 @@
+workflows:
+  black-sky-android:
+    name: PROJECT BLACK SKY — Android
+    max_build_duration: 90
+    instance_type: linux_x2
+    environment:
+      flutter: 3.35.0
+      java: 17
+      groups:
+        - black_sky_secrets   # holds FIREBASE keys, NAKAMA_HOST, KEYSTORE_* (set in Codemagic UI)
+      vars:
+        PACKAGE_NAME: "com.blacksky.rts"
+    triggering:
+      events:
+        - push
+        - tag
+      branch_patterns:
+        - pattern: "main"
+          include: true
+        - pattern: "develop"
+          include: true
+
+    scripts:
+      - name: Set up .env from Codemagic secrets
+        script: |
+          cat > .env <<EOF
+          NAKAMA_HOST=$NAKAMA_HOST
+          NAKAMA_PORT=$NAKAMA_PORT
+          NAKAMA_SERVER_KEY=$NAKAMA_SERVER_KEY
+          NAKAMA_USE_SSL=$NAKAMA_USE_SSL
+          EOF
+
+      - name: Decode google-services.json
+        script: |
+          echo $FIREBASE_GOOGLE_SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
+
+      - name: Get Flutter packages
+        script: flutter pub get
+
+      - name: Static analysis
+        script: flutter analyze --no-fatal-infos
+
+      - name: Decode Android keystore
+        script: |
+          echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.jks
+          cat > android/key.properties <<EOF
+          storePassword=$CM_KEYSTORE_PASSWORD
+          keyPassword=$CM_KEY_PASSWORD
+          keyAlias=$CM_KEY_ALIAS
+          storeFile=/tmp/keystore.jks
+          EOF
+
+      - name: Build APK (debug-signed for QA)
+        script: flutter build apk --release --target-platform android-arm,android-arm64,android-x64
+
+      - name: Build AAB (release, for Play Store)
+        script: flutter build appbundle --release
+
+    artifacts:
+      - build/app/outputs/**/*.apk
+      - build/app/outputs/**/*.aab
+      - build/app/outputs/mapping/**/mapping.txt
+
+    publishing:
+      email:
+        recipients:
+          - your-email@example.com
+        notify:
+          success: true
+          failure: true
