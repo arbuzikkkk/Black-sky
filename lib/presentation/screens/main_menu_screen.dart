@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:black_sky/core/config/build_flags.dart';
 import 'package:black_sky/core/theme/app_theme.dart';
 import 'package:black_sky/presentation/providers/auth_provider.dart';
 import 'package:black_sky/presentation/screens/battle_group_screen.dart';
@@ -11,8 +12,6 @@ class MainMenuScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: SafeArea(
@@ -21,11 +20,19 @@ class MainMenuScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              authState.when(
-                loading: () => const SizedBox(height: 72),
-                error: (_, __) => const SizedBox(height: 72),
-                data: (profile) => _ProfileHeader(profile: profile),
-              ),
+              if (kFirebaseEnabled)
+                Consumer(
+                  builder: (context, ref, _) {
+                    final authState = ref.watch(authStateProvider);
+                    return authState.when(
+                      loading: () => const SizedBox(height: 72),
+                      error: (_, __) => const SizedBox(height: 72),
+                      data: (profile) => _ProfileHeader(profile: profile),
+                    );
+                  },
+                )
+              else
+                const _OfflineHeader(),
               const SizedBox(height: 32),
               Text(
                 'PROJECT BLACK SKY',
@@ -62,6 +69,24 @@ class MainMenuScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _OfflineHeader extends StatelessWidget {
+  const _OfflineHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: AppTheme.surfaceRaised,
+          child: Icon(Icons.person_outline, color: AppTheme.textSecondary),
+        ),
+        SizedBox(width: 12),
+        Text('GUEST COMMANDER  •  offline build', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+      ],
     );
   }
 }

@@ -2,7 +2,6 @@ workflows:
   black-sky-android:
     name: PROJECT BLACK SKY — Android
     max_build_duration: 90
-    instance_type: linux_x2
     environment:
       flutter: 3.35.0
       java: 17
@@ -30,9 +29,18 @@ workflows:
           NAKAMA_USE_SSL=$NAKAMA_USE_SSL
           EOF
 
-      - name: Decode google-services.json
+      # Firebase is OFF in this build (see lib/core/config/build_flags.dart,
+      # kFirebaseEnabled = false) — no google-services.json is needed yet.
+      # Once a real Firebase project exists, flip that flag to true and
+      # re-add a step here decoding FIREBASE_GOOGLE_SERVICES_JSON_BASE64 into
+      # android/app/google-services.json before `flutter pub get`.
+
+      - name: Generate missing native platform folders
         script: |
-          echo $FIREBASE_GOOGLE_SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
+          # The repo ships lib/ + pubspec.yaml only (no android/ folder was
+          # committed). `flutter create` fills in the standard native
+          # scaffold without touching existing files like lib/ or pubspec.yaml.
+          flutter create --platforms=android --org com.blacksky --project-name black_sky .
 
       - name: Get Flutter packages
         script: flutter pub get
@@ -63,8 +71,7 @@ workflows:
 
     publishing:
       email:
-        recipients:
-          - your-email@example.com
+        recipients: []  # add your email here once you want build notifications
         notify:
           success: true
           failure: true

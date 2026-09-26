@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:black_sky/core/config/build_flags.dart';
 import 'package:black_sky/core/di/service_locator.dart';
 import 'package:black_sky/core/theme/app_theme.dart';
 import 'package:black_sky/presentation/screens/splash_screen.dart';
@@ -19,7 +20,12 @@ Future<void> main() async {
     debugPrint('No .env found — copy .env.example to .env and fill in Firebase/Nakama config.');
   }
 
-  await Firebase.initializeApp();
+  if (kFirebaseEnabled) {
+    await Firebase.initializeApp();
+  } else {
+    debugPrint('[black_sky] kFirebaseEnabled=false — booting in offline/guest mode, no Firebase Auth/Firestore.');
+  }
+
   await setupServiceLocator();
 
   runApp(const ProviderScope(child: BlackSkyApp()));

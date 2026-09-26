@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:black_sky/core/config/build_flags.dart';
 import 'package:black_sky/core/theme/app_theme.dart';
 import 'package:black_sky/presentation/providers/auth_provider.dart';
 import 'package:black_sky/presentation/screens/login_screen.dart';
@@ -10,6 +11,18 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!kFirebaseEnabled) {
+      // No Firebase configured in this build (see build_flags.dart) — skip
+      // auth entirely and drop straight into an offline guest session.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const MainMenuScreen()),
+        );
+      });
+      return const _SplashBody();
+    }
+
     final authState = ref.watch(authStateProvider);
 
     return authState.when(
