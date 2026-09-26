@@ -68,3 +68,10 @@ workflows:
       - build/app/outputs/**/*.apk
       - build/app/outputs/**/*.aab
       - build/app/outputs/mapping/**/mapping.txt
+
+    publishing:
+      email:
+        recipients: []  # add your email here once you want build notifications
+        notify:
+          success: true
+          failure: true
