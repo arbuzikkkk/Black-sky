@@ -42,8 +42,9 @@ workflows:
           # scaffold without touching existing files like lib/ or pubspec.yaml.
           flutter create --platforms=android --org com.blacksky --project-name black_sky .
 
-      - name: Get Flutter packages
-        script: flutter pub get
+      - name: Generate missing native platform folders
+        script: |
+          flutter create --platforms=android --org com.blacksky --project-name black_sky .
 
       - name: Static analysis
         script: flutter analyze --no-fatal-infos
