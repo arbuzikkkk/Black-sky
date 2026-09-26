@@ -2,7 +2,6 @@ workflows:
   black-sky-android:
     name: PROJECT BLACK SKY — Android
     max_build_duration: 90
-    instance_type: linux
     environment:
       flutter: 3.35.0
       java: 17
