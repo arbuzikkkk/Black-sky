@@ -34,8 +34,9 @@ workflows:
         script: |
           echo $FIREBASE_GOOGLE_SERVICES_JSON_BASE64 | base64 --decode > android/app/google-services.json
 
-      - name: Get Flutter packages
-        script: flutter pub get
+      - name: Generate missing native platform folders
+        script: |
+          flutter create --platforms=android --org com.blacksky --project-name black_sky .
 
       - name: Static analysis
         script: flutter analyze --no-fatal-infos
